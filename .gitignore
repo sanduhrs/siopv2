@@ -1,0 +1,6 @@
+/vendor/
+/.composer-cache/
+/.phpunit.cache/
+/coverage/
+/coverage.xml
+

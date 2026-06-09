@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="OpenID4VC SIOPv2 PER-CS3.0">
+    <description>
+        PHP_CodeSniffer ruleset aligned with PER Coding Style 3.0 using the built-in PSR12 standard as a base.
+    </description>
+
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="4"/>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <rule ref="PSR12"/>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+</ruleset>

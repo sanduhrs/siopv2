@@ -1,0 +1,48 @@
+image: php:8.3-cli
+
+stages:
+  - test
+  - quality
+  - coverage
+
+variables:
+  COMPOSER_ALLOW_SUPERUSER: "1"
+  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
+
+cache:
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - .composer-cache/
+    - vendor/
+
+before_script:
+  - apt-get update -yqq
+  - apt-get install -yqq git unzip curl
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  - composer install --prefer-dist --no-progress --no-interaction
+
+test:
+  stage: test
+  script:
+    - composer test
+
+lint:
+  stage: quality
+  script:
+    - composer lint
+
+analyze:
+  stage: quality
+  script:
+    - composer analyze
+
+coverage:
+  stage: coverage
+  script:
+    - php -m | grep -Eiq 'xdebug|pcov' || (echo "No coverage driver installed, skipping coverage generation." && exit 0)
+    - composer test:coverage
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+      - coverage.xml
